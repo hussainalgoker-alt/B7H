@@ -1,3 +1,47 @@
+import tkinter as tk
+from tkinter import messagebox
+import subprocess
+import sys
+import pkg_resources
+
+# دالة لتحديث مكتبة محددة
+def update_one():
+    package = entry.get().strip()
+    if not package:
+        messagebox.showwarning("تحذير", "يرجى إدخال اسم الأداة أولاً!")
+        return
+
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", package])
+        messagebox.showinfo("نجاح ✅", f"تم تحديث الأداة: {package}")
+    except Exception as e:
+        messagebox.showerror("خطأ ❌", f"فشل التحديث:\n{e}")
+
+# دالة لتحديث جميع الأدوات المثبتة
+def update_all():
+    try:
+        packages = [dist.project_name for dist in pkg_resources.working_set]
+        for pkg in packages:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", pkg])
+        messagebox.showinfo("تم ✅", "تم تحديث جميع الأدوات بنجاح!")
+    except Exception as e:
+        messagebox.showerror("خطأ ❌", f"حدث خطأ أثناء التحديث:\n{e}")
+
+# واجهة المستخدم
+root = tk.Tk()
+root.title("تحديث أدوات بايثون")
+root.geometry("350x220")
+root.resizable(False, False)
+
+tk.Label(root, text="🔧 أدخل اسم الأداة لتحديثها:", font=("Arial", 12)).pack(pady=10)
+entry = tk.Entry(root, width=30, font=("Arial", 11))
+entry.pack(pady=5)
+
+tk.Button(root, text="تحديث الأداة", command=update_one, bg="#4CAF50", fg="white", font=("Arial", 11), width=20).pack(pady=10)
+tk.Button(root, text="تحديث جميع الأدوات", command=update_all, bg="#2196F3", fg="white", font=("Arial", 11), width=20).pack(pady=10)
+tk.Button(root, text="خروج", command=root.quit, bg="#f44336", fg="white", font=("Arial", 11), width=20).pack(pady=5)
+
+root.mainloop()
 import os
 try:
   import requests  
@@ -191,3 +235,4 @@ def Bmw():
                     
 
 Bmw()
+
