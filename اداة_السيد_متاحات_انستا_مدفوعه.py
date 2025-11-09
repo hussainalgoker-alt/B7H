@@ -1,3 +1,29 @@
+import requests, os, sys
+
+# رابط الملف من GitHub (Raw)
+UPDATE_URL = "https://raw.githubusercontent.com/hussainalgoker-alt/B7H/main/B7HRM.PY"
+LOCAL_FILE = sys.argv[0]
+
+def check_update():
+    try:
+        print("🔄 فحص التحديثات...")
+        online_code = requests.get(UPDATE_URL).text
+
+        with open(LOCAL_FILE, "r", encoding="utf-8") as f:
+            local_code = f.read()
+
+        if online_code.strip() != local_code.strip():
+            print("✨ يوجد تحديث جديد! يتم التحديث الآن...")
+            with open(LOCAL_FILE, "w", encoding="utf-8") as f:
+                f.write(online_code)
+            print("✅ تم تحديث الأداة بنجاح! أعد تشغيلها الآن.")
+            sys.exit()
+        else:
+            print("✅ الأداة محدثة لآخر إصدار.")
+    except Exception as e:
+        print("⚠️ لم يتمكن من فحص التحديث:", e)
+
+check_update()
 import webbrowser
 webbrowser.open('https://t.me/J9J9J2')
 import os
